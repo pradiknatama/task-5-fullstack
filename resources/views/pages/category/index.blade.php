@@ -14,18 +14,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($category as $item)
+                    @forelse ($category as $key=>$item)
                         <tr>
-                            <th scope="row">1</th>
+                            <th scope="row">{{ $key + 1 }} </th>
                             <td>{{ $item->name }}</td>
                             <td>
-                                <a href="" class="btn btn-info">Edit</a>
-                                <a href="" class="btn btn-danger">Hapus</a></td>
+                                <form action="/category/{{ $item->id }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('delete')
+                                    <a href="/category/{{ $item->id }}/detail" class="btn btn-info">Edit</a>
+                                    <button type="submit" class="btn btn-danger delete-confirm "
+                                        data-name="{{ $item->name }}">Hapus</button>
+                                </form>
+                            </td>
                         </tr>
                     @empty
-                    <tr>
-                        <td colspan="3" class="text-center">DATA MASIH KOSONG</td>
-                    </tr>
+                        <tr>
+                            <td colspan="3" class="text-center">DATA MASIH KOSONG</td>
+                        </tr>
                     @endforelse
 
                 </tbody>
@@ -33,3 +39,25 @@
         </div>
     </div>
 @endsection
+@push('sctipts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Apakah anda akan menghapus kategori ${name}?`,
+                    text: "Anda tidak akan bisa mengembalikan kategori ini!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((result) => {
+                    if (result) {
+                        form.submit();
+                    }
+                });
+        });
+    </script>
+@endpush
