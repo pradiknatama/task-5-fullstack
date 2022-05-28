@@ -20,7 +20,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::middleware('auth')->group(function () {
+    Route::get('/category',[CategoryController::class,'index']);
+    Route::get('/category/create',[CategoryController::class,'create']);
+    Route::post('/category/create',[CategoryController::class,'store']);
+    Route::get('/category/{id}/detail',[CategoryController::class,'edit']);
+    Route::put('/category/{id}',[CategoryController::class,'update']);
+    Route::delete('/category/{id}',[CategoryController::class,'destroy']);
+ });
 //middleware pasang
-Route::get('/category',[CategoryController::class,'index']);
-Route::get('/category/create',[CategoryController::class,'create']);

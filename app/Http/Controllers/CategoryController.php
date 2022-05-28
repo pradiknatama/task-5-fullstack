@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class CategoryController extends Controller
 {
@@ -37,7 +39,23 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'category'=>'required'
+            ],
+            [
+                'category.required'=>"Inputan nama kategori harus diisi !"
+            ]
+        );
+
+        Category::insert(
+            [
+                'name'=>$request['category'],
+                'user_id'=>Auth::user()->id
+            ]
+        );
+        Alert::success('Berhasil', 'Kategori baru berhasil dibuat');
+        return redirect('/category');
     }
 
     /**
@@ -57,9 +75,10 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        $category=Category::where('id',$id)->first();
+        return view('pages.category.edit',compact('category'));
     }
 
     /**
@@ -69,9 +88,23 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request,$id)
     {
-        //
+        $request->validate(
+            [
+                'category'=>'required'
+            ],
+            [
+                'category.required'=>"Inputan nama kategori harus diisi !"
+            ]
+        );
+        Category::where('id',$id)->update(
+            [
+                'name'=>$request['category'],
+            ]
+        );
+        Alert::success('Berhasil', 'Kategori berhasil diubah');
+        return redirect('/category');
     }
 
     /**
@@ -80,8 +113,10 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        Category::where('id',$id)->delete();
+        Alert::success('Berhasil', 'Kategori berhasil dihapus');
+        return redirect('/category');
     }
 }
