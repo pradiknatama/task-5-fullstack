@@ -19,13 +19,12 @@
                             <th scope="row">{{ $key + 1 }} </th>
                             <td>{{ $item->name }}</td>
                             <td>
-                               
                                 <form action="/category/{{ $item->id }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('delete')
                                     <a href="/category/{{ $item->id }}/detail" class="btn btn-info">Edit</a>
-                                    <button class="btn btn-danger "  data-name="{{ $item->name }}" type="submit">Hapus</button>
-
+                                    <button type="submit" class="btn btn-danger delete-confirm "
+                                        data-name="{{ $item->name }}">Hapus</button>
                                 </form>
                             </td>
                         </tr>
@@ -40,26 +39,25 @@
         </div>
     </div>
 @endsection
-@push("sctipts")
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
-<script type="text/javascript">
-
-$('.delete-confirm').click(function(event) {
-  var form =  $(this).closest("form");
-  var name = $(this).data("name");
-  event.preventDefault();
-  swal({
-      title: `Apakah anda akan menghapus produk ${name}?`,
-      text: "Anda tidak akan bisa mengembalikan produk ini!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-  })
-  .then((result) => {
-    if (result) {
-      form.submit();
-    }
-  });
-});
-</script>
+@push('sctipts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Apakah anda akan menghapus kategori ${name}?`,
+                    text: "Anda tidak akan bisa mengembalikan kategori ini!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((result) => {
+                    if (result) {
+                        form.submit();
+                    }
+                });
+        });
+    </script>
 @endpush
