@@ -2,10 +2,8 @@
 @section('content')
     <div class="container">
         <div class="card p-3">
-            <div class="col-3">
-                <a href="/category/create" class="btn btn-primary mt-2 mb-2">Tambah Kategori</a>
-            </div>
-            <table class="table table-striped">
+            <a href="/category/create" class="btn btn-primary col-12 col-md-3 col-lg-2 mt-2 mb-2">Tambah Kategori</a>
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">No</th>
