@@ -64,9 +64,10 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show($id)
     {
-        //
+        $article = Article::where('id', $id)->first();
+        return view("pages.article.detail",compact('article'));
     }
 
     /**
