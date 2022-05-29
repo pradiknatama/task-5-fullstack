@@ -13,4 +13,7 @@ class Category extends Model
     protected $fillable =[
         'name','user_id'
     ];
+    public function artikel(){
+        return $this->hasOne('App\Model\Article');
+    }
 }
